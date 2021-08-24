@@ -1,4 +1,4 @@
-# sample_project
+# Hello!
 
 Hi! This is my sample project in my application to the Recurse Center. 
 
