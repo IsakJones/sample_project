@@ -18,7 +18,7 @@ def country_table_creator():
     # Get the iban table with all the necesary rows
     table_iban = soup_iban.find("table", id="myTable").find("tbody")
     rows_iban = table_iban.find_all("tr")
-    # First input worldwide
+    # Initiate column lists
     country_names = []
     alpha_2s = []
     alpha_3s = []
@@ -42,13 +42,14 @@ def country_table_creator():
     country_names.append("Worldwide")
     alpha_2s.append("")
     alpha_3s.append("")
-    g_20_memberships.append(True)
+    g_20_memberships.append(True) # Included for comparisons
     # Create resulting df
     dictionary = {"Country": country_names,
                   "Alpha_2": alpha_2s,
                   "Alpha_3": alpha_3s,
                   "G20": g_20_memberships}
     
+    # UN column is false by default
     df = pd.DataFrame(dictionary)
     df["UN"] = False
     
@@ -63,12 +64,12 @@ def country_table_creator():
         print(un_country)
         if un_country in list(df["Country"]):
             df.loc[df["Country"] == un_country, "UN"] = True
-        # If it can't find the country, manually insert the Alpha 3 code
+        # If it can't find the country by name, manually insert the Alpha 3 code
         else:
             code = input(f"Country: {un_country} - Alpha 3:")
             df.loc[df["Alpha_3"] == code, "UN"] = True
             
-    # Include "Worldwide"
+    # Include "Worldwide", again for comparison
     df.loc[df["Country"] == "Worldwide", "UN"] = True
     # Exclude non-un countries
     df = df[df["UN"] == True]
@@ -80,14 +81,15 @@ def country_table_creator():
 # %%
 country_table = country_table_creator()
 # %%
-# Add 2004 population as 2004_POP
+# Add 2004 population as 2004_POP column
 for row in wbank.data.fetch("SP.POP.TOTL", economy=country_table["Alpha 3"], time=2004):
     country_table.loc[country_table["Alpha_3"] == row["economy"], "2004_POP"] = row["value"]
     
-# Add 2019 GDP per capita as GDPPCAP
+# Add 2019 GDP per capita as GDPPCAP column
 for row in wbank.data.fetch("NY.GDP.PCAP.CD", economy=country_table["Alpha 3"], time=2019):
     country_table.loc[country_table["Alpha_3"] == row["economy"], "GDPPCAP"] = row["value"]
     
 # %%
+# Save countrytable
 country_table.to_csv("country_table.csv")
 # %%
