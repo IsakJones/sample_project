@@ -1,4 +1,4 @@
-# Hello!
+# Global Interest in the 2020 U.S. Election
 
 Hi! This is my sample project in my application to the Recurse Center. 
 
