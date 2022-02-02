@@ -1,0 +1,4 @@
+
+how do you run this?
+
+have links inside the front page readme that links to other readmes inside the directories
