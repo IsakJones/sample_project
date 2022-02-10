@@ -1,6 +1,5 @@
 # Global Interest in the 2020 U.S. Election
 
-<<<<<<< HEAD
 <div align="center">
     <img alt="Screenshot" src="files/interest.png">
 </div>
