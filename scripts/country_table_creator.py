@@ -4,16 +4,17 @@ Includes a function returning a table, and executes the function, generating fil
 # %%
 import wbgapi as wbank
 import requests
-import global
 import pandas as pd
 from bs4 import BeautifulSoup
+
+from .global_vars import IBANLINK, G20, UNLINK
 
 def country_table_creator():
     """
     Returns table with un country name, alpha2 code, alpha3 code, UN membership, G-20 membership.
     """
     # Retrieve html page
-    req_iban = requests.get(global.IBANLINK).text
+    req_iban = requests.get(IBANLINK).text
     soup_iban = BeautifulSoup(req_iban, 'lxml')
     # Get the iban table with all the necesary rows
     table_iban = soup_iban.find("table", id="myTable").find("tbody")
@@ -31,7 +32,7 @@ def country_table_creator():
         alpha_2 = cells[1].text.strip()
         alpha_3 = cells[2].text.strip()
         # Set membership 
-        g_20_membership = alpha_2 in global.G20
+        g_20_membership = alpha_2 in G20
         # Append to column lists
         country_names.append(country_name)
         alpha_2s.append(alpha_2)
@@ -54,7 +55,7 @@ def country_table_creator():
     df["UN"] = False
     
     # Retrieve html page
-    req_un = requests.get(global.UNLINK).text
+    req_un = requests.get(UNLINK).text
     soup_un = BeautifulSoup(req_un, 'lxml')
     # Extract list of UN members, exclude first row
     un_countries = soup_un.find_all("h2")[1:] # Avoid superfluous
@@ -91,5 +92,5 @@ for row in wbank.data.fetch("NY.GDP.PCAP.CD", economy=country_table["Alpha 3"], 
     
 # %%
 # Save countrytable
-country_table.to_csv("country_table.csv")
+country_table.to_csv("tables/country_table.csv")
 # %%

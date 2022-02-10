@@ -3,15 +3,15 @@ Includes a function returning the table with interest in "United States" by UN c
 and executes the function, generating file monthly_df.csv.
 """
 # %%
-import global
 import pandas as pd
-from matplotlib import pyplot as plt
 from pytrends.request import TrendReq
+
+from .global_vars import UNITEDSTATES
 
 def monthly_df_creator():
     
     temp_df_list = []
-    country_table = pd.read_csv("country_table.csv")
+    country_table = pd.read_csv("../tables/country_table.csv")
     master_us_pytrends = TrendReq(hl='en-US', tz=360)
 
     for country_name, code in zip(country_table["Country"], country_table["Alpha_2"]):
@@ -19,7 +19,7 @@ def monthly_df_creator():
         print(country_name)
         # Get data, handle exception if country is not found
         try:
-            master_us_pytrends.build_payload(global.UNITEDSTATES,
+            master_us_pytrends.build_payload(UNITEDSTATES,
                                              timeframe = "all",
                                              geo=code)
         except Exception as e:
@@ -44,4 +44,4 @@ def monthly_df_creator():
     return monthly_df
 
 df = monthly_df_creator()
-df.to_csv("monthly.csv")
+df.to_csv("tables/monthly.csv")

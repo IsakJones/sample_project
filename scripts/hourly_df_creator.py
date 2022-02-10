@@ -20,10 +20,11 @@ df = hourly_us_pytrends.get_historical_interest(us_topic_id,
 
 df.drop(columns="isPartial", inplace=True)
 df.columns = ["2020"]
-df.to_csv("hourly.csv")
+df.to_csv("table/hourly.csv")
 
 # %%
-df = pd.read_csv("hourly.csv")
+# Check data
+df = pd.read_csv("table/hourly.csv")
 
 plt.plot(pd.to_datetime(df["date"], infer_datetime_format=True), list(df["2020"]))
 # %%

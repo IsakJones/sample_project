@@ -5,8 +5,7 @@ The file includes three functions that perform statistical calculations.
 # %%
 import pandas as pd
 import numpy as np
-import datetime
-from matplotlib import pyplot as plt
+# import datetime
 from sklearn.linear_model import LinearRegression
 
 def residual(x_values, y_values, ind=17):
@@ -72,12 +71,12 @@ def means_and_errors(df, ind=12):
     
 # %%
 # Import monthly df, eliminate spurious column, and set "date" as index
-df = pd.read_csv("monthly_df.csv", header=0)
+df = pd.read_csv("tables/monthly_df.csv", header=0)
 df.drop(columns=["Unnamed: 0"], inplace=True)
 df.set_index("date", inplace=True)
 df.fillna(0, inplace=True)
 # Import country_table, set "country" as index
-country_table = pd.read_csv("country_tableComplete(for_now).csv")
+country_table = pd.read_csv("tables/country_tableComplete(for_now).csv")
 country_table.set_index("Country", inplace=True)
 # Gather means, 
 means, errors = means_and_errors(df=df)
@@ -93,4 +92,4 @@ addition = pd.DataFrame({"2004_MEAN": means,
 addition["MULTIPLE"] = addition["2020_NOV"] / (addition["2020_NOV"] - addition["RESIDUAL"])
 # Concatenate the two dfs, and save to file.
 new_df = pd.concat([country_table, addition], axis=1)
-new_df.to_csv("country_table.csv")
+new_df.to_csv("tables/country_table.csv")
